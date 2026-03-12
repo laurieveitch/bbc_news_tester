@@ -24,9 +24,11 @@ def test_navigation_to_uk_section(page: Page):
 
     page.wait_for_load_state("networkidle")
 
-    # Checking we're on the correct page
+    # Checking we're on the correct page via url
     expect(page).to_have_url(re.compile("/news/uk", re.IGNORECASE))
-    expect(page.locator("h1").filter(has_text="UK")).to_be_visible()
+    
+    # Checking for 'UK' heading to verify correct page
+    expect(page.get_by_role("heading", name="UK", exact=False).first).to_be_visible()
 
     print('Navigated to UK Section successfully √')
 
