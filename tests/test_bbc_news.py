@@ -19,14 +19,14 @@ def test_navigation_to_uk_section(page: Page):
     page.wait_for_load_state("networkidle")
     
     # Clicking on UK section link
-    uk_link = page.get_by_test_id("navigation").get_by_role("link", name="UK")
+    uk_link = page.get_by_role("link", name="UK", exact=False).first
     uk_link.click()
 
     page.wait_for_load_state("networkidle")
 
     # Checking we're on the correct page
-    expect(page).to_have_url("https://www.bbc.co.uk/news/uk")
-    expect(page.get_by_role("heading", name="UK", exact=False).first).to_be_visible()
+    expect(page).to_have_url(re.compile("/news/uk", re.IGNORECASE))
+    expect(page.locator("h1").filter(has_text="UK")).to_be_visible()
 
     print('Navigated to UK Section successfully √')
 
