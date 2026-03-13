@@ -22,29 +22,16 @@ def test_navigation_to_uk_section(page: Page):
     page.screenshot(path="debug-homepage.png")
     print("📸 Screenshot saved")
     
-    # DEBUG: Find all UK links and print their details
-    uk_links = page.get_by_role("link", name=re.compile("UK", re.IGNORECASE)).all()
-    print(f"Found {len(uk_links)} links containing 'UK'")
+    # ID first link with 'UK'
+    uk_link = page.get_by_role("link", name=re.compile("UK", re.IGNORECASE)).first
     
-    for i, link in enumerate(uk_links):
-        print(f"  Link {i+1}:")
-        print(f"    Text: '{link.text_content()}'")
-        print(f"    URL: '{link.get_attribute('href')}'")
-        print(f"    Visible: {link.is_visible()}")
-    
-    # Try clicking the first visible UK link
-    for link in uk_links:
-        if link.is_visible():
-            print(f"Clicking visible link: '{link.text_content()}'")
-            link.click()
-            break
-    else:
-        print("No visible UK links found!")
-        # If we get here, take another screenshot
-        page.screenshot(path="debug-no-visible-links.png")
-        assert False, "No visible UK links found"
+    with page.expect_navigation():
+        uk_link.click()
 
     page.wait_for_load_state("networkidle")
+
+    # Take screenshot after navigation
+    page.screenshot(path="debug-after-click.png")
 
     # Checking we're on the correct page via url
     expect(page).to_have_url(re.compile("/news/uk", re.IGNORECASE))
@@ -53,8 +40,6 @@ def test_navigation_to_uk_section(page: Page):
     expect(page.get_by_role("heading", name="UK", exact=False).first).to_be_visible()
 
     print('Navigated to UK Section successfully √')
-
-
 
 if __name__ == "__main__":
     pytest.main(["-v", "-s", "--headed"])
