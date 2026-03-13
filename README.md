@@ -24,8 +24,8 @@ This project demonstrates automated testing of a live news website, verifying:
 ## 🚀 Quick Start
 ```bash
 # Clone the repository
-git clone https://github.com/laurieveitch/bbc-news-tester
-cd bbc-news-tester
+git clone https://github.com/laurieveitch/bbc_news_tester
+cd bbc_news_tester
 
 # Install dependencies
 pip install -r requirements.txt
