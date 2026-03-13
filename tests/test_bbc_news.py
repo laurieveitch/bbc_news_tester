@@ -18,6 +18,23 @@ def test_navigation_to_uk_section(page: Page):
 
     page.wait_for_load_state("networkidle")
     
+    # DEBUG: Take a screenshot
+    page.screenshot(path="debug-homepage.png")
+    print("📸 Screenshot saved")
+    
+    # DEBUG: Check if UK link exists
+    link_count = page.get_by_role("link", name="UK", exact=False).count()
+    print(f"Found {link_count} links with 'UK'")
+    
+    # If no links found, print all link texts for debugging
+    if link_count == 0:
+        all_links = page.get_by_role("link").all()
+        print(f"Total links on page: {len(all_links)}")
+        print("First 10 link texts:")
+        for i, link in enumerate(all_links[:10]):
+            text = link.text_content()
+            print(f"  {i+1}. '{text}'")
+    
     # Clicking on UK section link
     uk_link = page.get_by_role("link", name="UK", exact=False).first
     uk_link.click()
@@ -31,6 +48,8 @@ def test_navigation_to_uk_section(page: Page):
     expect(page.get_by_role("heading", name="UK", exact=False).first).to_be_visible()
 
     print('Navigated to UK Section successfully √')
+
+
 
 if __name__ == "__main__":
     pytest.main(["-v", "-s", "--headed"])
