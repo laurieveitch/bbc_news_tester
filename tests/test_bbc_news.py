@@ -16,7 +16,8 @@ def test_navigation_to_uk_section(page: Page):
     # Starting on homepage
     page.goto("https://www.bbc.co.uk/news")
 
-    page.wait_for_load_state("networkidle")
+    # Instead of waiting for networkidle, wait for something visible
+    page.wait_for_selector('[data-testid="navigation"]', timeout=10000)
     
     # DEBUG: Take a screenshot
     page.screenshot(path="debug-homepage.png")
