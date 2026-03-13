@@ -24,12 +24,10 @@ def test_navigation_to_uk_section(page: Page):
     print("📸 Screenshot saved")
     
     # ID first link with 'UK'
-    uk_link = page.get_by_role("link", name=re.compile("UK", re.IGNORECASE)).first
-    
-    with page.expect_navigation():
-        uk_link.click()
+    uk_link = page.get_by_test_id("navigation").get_by_role("link", name=re.compile("UK", re.IGNORECASE)).first
+    uk_link.click()
 
-    page.wait_for_load_state("networkidle")
+    page.wait_for_url(re.compile("/news/uk", re.IGNORECASE), timeout=10000)
 
     # Take screenshot after navigation
     page.screenshot(path="debug-after-click.png")
