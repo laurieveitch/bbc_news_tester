@@ -13,18 +13,31 @@ def test_bbc_homepage(page: Page):
     print('Homepage loaded successfully √')
 
 def test_navigation_to_uk_section(page: Page):
-    """ULTRA SIMPLE - just check if we can get to UK page"""
-    # Go directly to UK page (skip navigation entirely)
-    page.goto("https://www.bbc.co.uk/news/uk")
+    """Simplified navigation test"""
+    # Start on homepage
+    page.goto("https://www.bbc.co.uk/news")
     
-    # Take screenshot
-    page.screenshot(path="uk-page-direct.png")
+    # Take screenshot to see what's there
+    page.screenshot(path="homepage.png")
     
-    # Check we're on UK page
+    # Print current URL to see if we're redirected
+    print(f"Homepage URL: {page.url}")
+    
+    # Look for ANY link containing UK and click it
+    uk_link = page.get_by_role("link", name=re.compile("UK", re.IGNORECASE)).first
+    print(f"Found link with text: {uk_link.text_content()}")
+    
+    # Click and wait briefly
+    uk_link.click()
+    page.wait_for_timeout(2000)  # Just wait 2 seconds
+    
+    # Print where we ended up
+    print(f"After click URL: {page.url}")
+    page.screenshot(path="after-click.png")
+    
+    # Assert we got to UK page
     expect(page).to_have_url(re.compile("/news/uk", re.IGNORECASE))
-    expect(page.get_by_text("UK", exact=False).first).to_be_visible()
-    
-    print("✅ UK page loaded directly")
+    print("✅ Navigation successful")
 
 if __name__ == "__main__":
     pytest.main(["-v", "-s", "--headed"])
