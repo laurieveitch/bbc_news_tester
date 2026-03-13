@@ -1,4 +1,4 @@
-![Tests](https://github.com/laurieveitch/bbc-news-tester/actions/workflows/test.yml/badge.svg)
+![Tests](https://github.com/laurieveitch/bbc_news_tester/actions/workflows/test.yml/badge.svg)
 
 # BBC News Smoke Tests
 
